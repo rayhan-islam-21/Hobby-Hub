@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link, NavLink } from "react-router";
+import AuthContext from "../../AuthContext/AuthContext";
 
 const Header = () => {
+  const {user,logOut} = useContext(AuthContext);
+  console.log(user);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
   useEffect(() => {
@@ -111,7 +114,9 @@ const Header = () => {
           </label>
 
           {/* Profile Dropdown */}
-          <div
+         {
+          user? <>
+           <div
             tabIndex={0}
             role="button"
             className="btn btn-ghost btn-circle avatar"
@@ -134,9 +139,13 @@ const Header = () => {
               <a>Settings</a>
             </li>
             <li>
-              <a>Logout</a>
+              <button onClick={()=>logOut()} className="btn btn-error">Logout</button>
             </li>
           </ul>
+          </> : <div className="flex gap-3">
+            <Link to="/login"><button className="btn btn-sm btn-success btn-outline">Login</button></Link>
+          </div>
+         }
         </div>
       </div>
     </div>
