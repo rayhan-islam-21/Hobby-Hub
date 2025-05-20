@@ -1,14 +1,15 @@
 import React, { useContext } from "react";
 import { FaGoogle } from "react-icons/fa";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import AuthContext from "../../AuthContext/AuthContext";
 import { useFormik } from "formik";
 import { toast, ToastContainer } from "react-toastify";
 
 const Register = () => {
   const { signUpwithEmail, signUpwithGoogle } = useContext(AuthContext);
+      const navigate = useNavigate();
+    const location = useLocation()
   const notify = ()=>   toast.success("Account Created Successfully!", {
-      position: "top-center",
       autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
@@ -35,7 +36,8 @@ const Register = () => {
       signUpwithEmail(email, password)
         .then(() => {
           console.log("user created");
-          notify()
+          notify();
+          navigate(location.state? location.state :"/")
         })
         .catch((error) => {
           console.log(error);
@@ -46,14 +48,12 @@ const Register = () => {
 
   const handleGoogleSignUp = () => {
      signUpwithGoogle()
-     .then((result)=>{
-        console.log(result)
-        console.log("Google")
-        console.log("Google sign-up clicked");
-        notify()
+     .then(()=>{
+        notify();
+        navigate(location.state? location.state :"/")
      })
      .catch((err)=>{
-        console.log(err)
+        // console.log(err)
      })
     
   };

@@ -1,15 +1,16 @@
 import React, { useContext } from "react";
 import { FaGoogle } from "react-icons/fa";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useFormik } from "formik";
 import AuthContext from "../../AuthContext/AuthContext";
 import { toast, ToastContainer } from "react-toastify";
 
 const Login = () => {
-  const { signInWithEmail,logOut } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const location = useLocation()
+  const { signInWithEmail,signUpwithGoogle } = useContext(AuthContext);
   const notify = () =>
     toast.success("Logged in Successfully!", {
-      position: "top-center",
       autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
@@ -32,7 +33,8 @@ const Login = () => {
         .then(() => {
           console.log("user logged in");
           notify();
-          resetForm()
+          resetForm();
+         navigate(location.state? location.state :"/")
         })
         .catch((error) => {
           console.log(error);
@@ -41,7 +43,15 @@ const Login = () => {
   });
 
   const handleGoogleLogin = () => {
-    // Handle Google login logic here
+    signUpwithGoogle()
+      .then((result) => {
+        console.log(result);
+        notify();
+        navigate(location.state? location.state :"/")
+      })
+        .catch((err) => {
+        console.log(err);
+        })
     console.log("Google login clicked");
   };
 

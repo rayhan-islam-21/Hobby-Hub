@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Groups = () => {
+const AllGroups = () => {
     return (
         <div>
             
@@ -8,4 +8,4 @@ const Groups = () => {
     );
 };
 
-export default Groups;
+export default AllGroups;

@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link, NavLink } from "react-router";
 import AuthContext from "../../AuthContext/AuthContext";
-
+import { Tooltip } from "react-tooltip";
+import Spinner from "../Spinner/Spinner";
 const Header = () => {
-  const {user,logOut} = useContext(AuthContext);
+  const { user, logOut, loading } = useContext(AuthContext);
   console.log(user);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
@@ -43,7 +44,13 @@ const Header = () => {
                 <NavLink to="/">Home</NavLink>
               </li>
               <li>
-                <NavLink to="/groups">All Groups</NavLink>
+                <NavLink to="/allgroup">All Groups</NavLink>
+              </li>
+              <li>
+                <NavLink to="/creategroup">Create Group</NavLink>
+              </li>
+              <li>
+                <NavLink to="/mygroup">My Groups</NavLink>
               </li>
             </ul>
           </div>
@@ -52,14 +59,17 @@ const Header = () => {
 
       {/* Logo */}
       <div className="flex-1 text-center lg:text-left">
-        <Link to="/" className="lg:font-bold font-semibold sm:text-sm md:text-lg lg:text-xl">
+        <Link
+          to="/"
+          className="lg:font-bold font-semibold sm:text-sm md:text-lg lg:text-xl"
+        >
           Hobby-<span className="text-red-600">HUB</span>
         </Link>
       </div>
 
       {/* Nav Links */}
       <div className="hidden lg:flex flex-1 justify-center">
-        <ul className="flex gap-4">
+        <ul className="flex gap-6">
           <li>
             <NavLink
               to="/"
@@ -71,8 +81,14 @@ const Header = () => {
             </NavLink>
           </li>
           <li>
+            <NavLink to="/creategroup">Create Group</NavLink>
+          </li>
+          <li>
+            <NavLink to="mygroup">My Groups</NavLink>
+          </li>
+          <li>
             <NavLink
-              to="/groups"
+              to="/allgroups"
               className={({ isActive }) =>
                 isActive ? "text-blue-500 font-bold" : ""
               }
@@ -114,38 +130,55 @@ const Header = () => {
           </label>
 
           {/* Profile Dropdown */}
-         {
-          user? <>
-           <div
-            tabIndex={0}
-            role="button"
-            className="btn btn-ghost btn-circle avatar"
-          >
-            <div className="w-8 lg:w-10 rounded-full">
-              <img
-                alt="User avatar"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-              />
+          {loading ? (
+            <span className="loading loading-spinner loading-xl"></span>
+          ) : user ? (
+            <>
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle avatar"
+              >
+                <div className="w-8 lg:w-10 rounded-full">
+                  <img
+                    alt="User avatar"
+                    data-tooltip-id="my-tooltip"
+                    data-tooltip-content={user.displayName}
+                    data-tooltip-place="bottom"
+                    src={user.photoURL}
+                  />
+                  <Tooltip id="my-tooltip" />
+                </div>
+              </div>
+              <ul
+                tabIndex={0}
+                className="menu menu-sm dropdown-content bg-base-100 rounded-box shadow mt-3 p-2 w-32 z-[1]"
+              >
+                <li>
+                  <a>Profile</a>
+                </li>
+                <li>
+                  <a>Settings</a>
+                </li>
+                <li>
+                  <button
+                    onClick={() => logOut()}
+                    className="btn btn-xs btn-error"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </ul>
+            </>
+          ) : (
+            <div className="flex gap-3">
+              <Link to="/login">
+                <button className="btn btn-sm btn-success btn-outline">
+                  Login
+                </button>
+              </Link>
             </div>
-          </div>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box shadow mt-3 p-2 w-32 z-[1]"
-          >
-            <li>
-              <a>Profile</a>
-            </li>
-            <li>
-              <a>Settings</a>
-            </li>
-            <li>
-              <button onClick={()=>logOut()} className="btn btn-error">Logout</button>
-            </li>
-          </ul>
-          </> : <div className="flex gap-3">
-            <Link to="/login"><button className="btn btn-sm btn-success btn-outline">Login</button></Link>
-          </div>
-         }
+          )}
         </div>
       </div>
     </div>
