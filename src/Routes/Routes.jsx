@@ -8,6 +8,7 @@ import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import CreateGroup from "../Pages/CreateGroup/CreateGroup";
 import MyGroups from "../Pages/Groups/Mygroups";
 import AllGroups from "../Pages/AllGroups/AllGroups";
+import AuthLayout from "../Layouts/AuthLayout/AuthLayout";
 
 const router = createBrowserRouter([
     {
@@ -19,24 +20,30 @@ const router = createBrowserRouter([
                 Component:Home
             },
             {
-                path:"/register",
-                Component: Register
-            },
-            {
-                path:"/login",
-                Component: Login
-            },
-            {
-                path:"/creategroup",
+                path:"creategroup",
                 element: <PrivateRoute><CreateGroup></CreateGroup></PrivateRoute>
             },
             {
-                path:"/mygroup",
+                path:"mygroup",
                 element: <PrivateRoute><MyGroups></MyGroups></PrivateRoute>
             },
             {
-                path:"/allgroup",
+                path:"allgroups",
                 Component:AllGroups
+            }
+        ]
+    },
+    {
+        path:"/auth",
+        Component:AuthLayout,
+        children:[
+            {
+                path:"/auth/register", 
+                Component: Register
+            },
+            {
+                path:"/auth/login",
+                Component: Login
             }
         ]
     },

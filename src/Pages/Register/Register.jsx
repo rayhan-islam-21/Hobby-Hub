@@ -4,6 +4,8 @@ import { Link, useLocation, useNavigate } from "react-router";
 import AuthContext from "../../AuthContext/AuthContext";
 import { useFormik } from "formik";
 import { toast, ToastContainer } from "react-toastify";
+import { updateProfile } from "firebase/auth";
+import { auth } from "../FireBase/Firebase";
 
 const Register = () => {
   const { signUpwithEmail, signUpwithGoogle } = useContext(AuthContext);
@@ -37,7 +39,13 @@ const Register = () => {
         .then(() => {
           console.log("user created");
           notify();
-          navigate(location.state? location.state :"/")
+          updateProfile(auth.currentUser,{
+            displayName: name,
+            photoURL: photoURL,
+          })
+          setTimeout(() => {
+          navigate(location.state ? location.state : "/");
+        }, 1500);
         })
         .catch((error) => {
           console.log(error);
@@ -50,9 +58,11 @@ const Register = () => {
      signUpwithGoogle()
      .then(()=>{
         notify();
-        navigate(location.state? location.state :"/")
+        setTimeout(() => {
+          navigate(location.state ? location.state : "/");
+        }, 1500);
      })
-     .catch((err)=>{
+     .catch(()=>{
         // console.log(err)
      })
     
@@ -60,7 +70,6 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-2">
-        <ToastContainer></ToastContainer>
       <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
           Create Account
@@ -164,7 +173,7 @@ const Register = () => {
         <p className="mt-4 text-center text-sm text-gray-600">
           Already have an account?{" "}
           <Link
-            to="/login"
+            to="/auth/login"
             className="text-blue-600 font-medium hover:underline"
           >
             Login

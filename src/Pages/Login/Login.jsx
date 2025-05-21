@@ -6,62 +6,55 @@ import AuthContext from "../../AuthContext/AuthContext";
 import { toast, ToastContainer } from "react-toastify";
 
 const Login = () => {
-    const navigate = useNavigate();
-    const location = useLocation()
-  const { signInWithEmail,signUpwithGoogle } = useContext(AuthContext);
-  const notify = () =>
-    toast.success("Logged in Successfully!", {
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      style: {
-        fontSize: "1rem",
-        padding: "12px 24px",
-        borderRadius: "12px",
-        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.15)",
-      },
-    });
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { signInWithEmail, signUpwithGoogle } = useContext(AuthContext);
+  const notify = () => toast.success("Logged in!");
 
   const formik = useFormik({
-    initialValues: {},
-    onSubmit: (values,{resetForm}) => {
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit: (values, { resetForm }) => {
       const { email, password } = values;
       signInWithEmail(email, password)
         .then(() => {
-          console.log("user logged in");
           notify();
+          setTimeout(() => {
+            navigate(location.state ? location.state : "/");
+          }, 1500);
+
           resetForm();
-         navigate(location.state? location.state :"/")
+          navigate(location.state ? location.state : "/");
         })
         .catch((error) => {
           console.log(error);
         });
     },
   });
+  //  notify()
 
   const handleGoogleLogin = () => {
     signUpwithGoogle()
-      .then((result) => {
-        console.log(result);
+      .then(() => {
         notify();
-        navigate(location.state? location.state :"/")
+        setTimeout(() => {
+          navigate(location.state ? location.state : "/");
+        }, 1500);
       })
-        .catch((err) => {
-        console.log(err);
-        })
-    console.log("Google login clicked");
+      .catch(() => {
+        // console.log(err);
+      });
   };
 
   return (
-    <div className="min-h-screen flex items-start my-20 justify-center p-4">
+    <div className="min-h-screen flex items-start lg:my-16 mt-32  justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
         <h2 className=" md:text-2xl text-2xl lg:text-3xl font-bold text-center text-gray-800 mb-6">
           Login to Your Account
         </h2>
-        <ToastContainer></ToastContainer>
+
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           <div>
             <label
@@ -124,7 +117,7 @@ const Login = () => {
         <p className="mt-4 text-center text-sm text-gray-600">
           Don't have an account?{" "}
           <Link
-            to="/register"
+            to="/auth/register"
             className="text-blue-600 font-medium hover:underline"
           >
             Register

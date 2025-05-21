@@ -3,7 +3,6 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import { Link, NavLink } from "react-router";
 import AuthContext from "../../AuthContext/AuthContext";
 import { Tooltip } from "react-tooltip";
-import Spinner from "../Spinner/Spinner";
 const Header = () => {
   const { user, logOut, loading } = useContext(AuthContext);
   console.log(user);
@@ -44,7 +43,7 @@ const Header = () => {
                 <NavLink to="/">Home</NavLink>
               </li>
               <li>
-                <NavLink to="/allgroup">All Groups</NavLink>
+                <NavLink to="/allgroups">All Groups</NavLink>
               </li>
               <li>
                 <NavLink to="/creategroup">Create Group</NavLink>
@@ -81,10 +80,14 @@ const Header = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/creategroup">Create Group</NavLink>
+            <NavLink   className={({ isActive }) =>
+                isActive ? "text-blue-500 font-bold" : ""
+              } to="/creategroup">Create Group</NavLink>
           </li>
           <li>
-            <NavLink to="mygroup">My Groups</NavLink>
+            <NavLink   className={({ isActive }) =>
+                isActive ? "text-blue-500 font-bold" : ""
+              } to="mygroup">My Groups</NavLink>
           </li>
           <li>
             <NavLink
@@ -172,7 +175,7 @@ const Header = () => {
             </>
           ) : (
             <div className="flex gap-3">
-              <Link to="/login">
+              <Link to="/auth/login">
                 <button className="btn btn-sm btn-success btn-outline">
                   Login
                 </button>
