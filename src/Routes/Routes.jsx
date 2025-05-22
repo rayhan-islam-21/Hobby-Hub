@@ -9,6 +9,7 @@ import CreateGroup from "../Pages/CreateGroup/CreateGroup";
 import MyGroups from "../Pages/Groups/Mygroups";
 import AllGroups from "../Pages/AllGroups/AllGroups";
 import AuthLayout from "../Layouts/AuthLayout/AuthLayout";
+import GroupDetails from "../Pages/GroupDetails/GroupDetails";
 
 const router = createBrowserRouter([
     {
@@ -29,7 +30,12 @@ const router = createBrowserRouter([
             },
             {
                 path:"allgroups",
+                loader:()=>fetch("http://localhost:3000/allgroups"),
                 Component:AllGroups
+            },
+            {
+                path:"/groupdetails",
+                Component:GroupDetails
             }
         ]
     },
