@@ -1,28 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router";
 
-const Groups = ({ group, deleteGroup }) => {
+const Groups = ({ group,handleDelete}) => {
   const { _id, category, description, groupName, imageUrl } = group;
   const navigate = useNavigate()
 
-  const handleDelete = (id) => {
-    fetch(`https://hobbyhub-server-ten.vercel.app/allgroups/${id}`, {
-      method: "DELETE",
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to delete");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log("Delete response:", data);
-        deleteGroup(id);
-      })
-      .catch((err) => {
-        console.error("Error deleting group:", err);
-      });
-  };
+  
 
   const handleDetails = (id) => {
     console.log("Details for group with id:", id);
@@ -57,7 +40,7 @@ const Groups = ({ group, deleteGroup }) => {
             See More
           </button>
           <button
-            onClick={() => handleDelete(_id)}
+            onClick={() => handleDelete(group)}
             className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-5 py-2 rounded-full font-semibold shadow-md cursor-pointer hover:shadow-lg transition"
           >
             Delete
