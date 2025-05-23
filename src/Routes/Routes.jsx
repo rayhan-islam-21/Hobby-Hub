@@ -26,21 +26,22 @@ const router = createBrowserRouter([
             },
             {
                 path:"/mygroups/:email",
-                loader: async ({params}) => await fetch(`http://localhost:2000/mygroups/${params.email}`),
+                loader: async ({params}) => await fetch(`https://hobbyhub-server-ten.vercel.app/mygroups/${params.email}`),
                 element: <PrivateRoute><MyGroups></MyGroups></PrivateRoute>
             },
             {
                 path:"/allgroups",
-                loader:()=>fetch("http://localhost:2000/allgroups"),
+                loader:()=>fetch("https://hobbyhub-server-ten.vercel.app/allgroups"),
                 Component:AllGroups
             },
             {
               path:"/allgroups/:id",
-                loader: async ({params}) =>await  fetch(`http://localhost:2000/allgroups${params.id}`),
+                loader: async ({params}) =>await  fetch(`https://hobbyhub-server-ten.vercel.app/allgroups/${params.id}`),
                 Component:GroupDetails  
             },
             {
-                path:"/groupdetails",
+                path:"/groupdetails/:id",
+                loader: async ({params}) =>await  fetch(`https://hobbyhub-server-ten.vercel.app/allgroups/${params.id}`),
                 Component:GroupDetails
             }
         ]

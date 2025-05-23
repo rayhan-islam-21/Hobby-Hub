@@ -12,6 +12,7 @@ const CreateGroup = () => {
     "Video Gaming",
     "Fishing",
     "Running",
+    "Football",
     "Cooking",
     "Reading",
     "Writing",
@@ -34,7 +35,7 @@ const CreateGroup = () => {
         userEmail: user?.email,
       };
       //Post the group data to the server
-      fetch('http://localhost:2000/allgroups', {
+      fetch('https://hobbyhub-server-ten.vercel.app/allgroups', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -53,7 +54,7 @@ const CreateGroup = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 flex justify-center items-start py-10 px-4">
+    <div className="min-h-screen  flex justify-center items-start mt-12 mb-12 py-10 px-4">
       <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-4xl">
         <h2 className="text-3xl font-bold mb-8 text-center text-blue-700">
           Create a Hobby Group
@@ -70,7 +71,7 @@ const CreateGroup = () => {
               onChange={formik.handleChange}
               value={formik.values.groupName}
               required
-              className="w-full px-4 py-2 border rounded-xl focus:ring-` focus:ring-blue-400 outline-none"
+              className="w-full px-4 py-2 border text-black rounded-xl focus:ring-1 focus:ring-blue-400 outline-none"
             />
           </div>
 
@@ -83,7 +84,7 @@ const CreateGroup = () => {
               onChange={formik.handleChange}
               value={formik.values.category}
               required
-              className="w-full px-4 py-2 border rounded-xl bg-white text-gray-800 focus:ring-1 focus:ring-blue-400 outline-none"
+              className="w-full px-4 text-black py-2 border rounded-xl bg-white text-gray-800 focus:ring-1 focus:ring-blue-400 outline-none"
             >
               <option value="">Select a category</option>
               {hobbyCategories.map((cat) => (
@@ -104,7 +105,7 @@ const CreateGroup = () => {
               value={formik.values.description}
               rows={4}
               required
-              className="w-full px-4 py-2 border rounded-xl focus:ring-1 focus:ring-blue-400 outline-none"
+              className="w-full text-black px-4 py-2 border rounded-xl focus:ring-1 focus:ring-blue-400 outline-none"
             />
           </div>
 
@@ -118,7 +119,7 @@ const CreateGroup = () => {
               onChange={formik.handleChange}
               value={formik.values.meetingLocation}
               required
-              className="w-full px-4 py-2 border rounded-xl focus:ring-1 focus:ring-blue-400 outline-none"
+              className="w-full px-4 text-black py-2 border rounded-xl focus:ring-1 focus:ring-blue-400 outline-none"
             />
           </div>
 
@@ -133,7 +134,7 @@ const CreateGroup = () => {
                 onChange={formik.handleChange}
                 value={formik.values.maxMembers}
                 required
-                className="w-full px-4 py-2 border rounded-xl focus:ring-1 focus:ring-blue-400 outline-none"
+                className="w-full px-4 text-black py-2 border rounded-xl focus:ring-1 focus:ring-blue-400 outline-none"
               />
             </div>
 
@@ -147,7 +148,7 @@ const CreateGroup = () => {
                 onChange={formik.handleChange}
                 value={formik.values.startDate}
                 required
-                className="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-blue-400 outline-none"
+                className="w-full px-4 text-black py-2 border rounded-xl focus:ring-2 focus:ring-blue-400 outline-none"
               />
             </div>
 
@@ -161,7 +162,7 @@ const CreateGroup = () => {
                 onChange={formik.handleChange}
                 value={formik.values.imageUrl}
                 required
-                className="w-full px-4 py-2 border rounded-xl focus:ring-1 focus:ring-blue-400 outline-none"
+                className="w-full text-black px-4 py-2 border rounded-xl focus:ring-1 focus:ring-blue-400 outline-none"
               />
             </div>
           </div>

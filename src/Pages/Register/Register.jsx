@@ -3,15 +3,33 @@ import { FaGoogle } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router";
 import AuthContext from "../../AuthContext/AuthContext";
 import { useFormik } from "formik";
+import * as Yup from "yup";
 import { toast, ToastContainer } from "react-toastify";
 import { updateProfile } from "firebase/auth";
 import { auth } from "../FireBase/Firebase";
 
+const SignupSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  email: Yup.string()
+    .email("Invalid email")
+    .required("Email is required"),
+  photoURL: Yup.string()
+    .url("Enter a valid URL")
+    .required("Photo URL is required"),
+  password: Yup.string()
+    .min(6, "Password must be at least 6 characters")
+    .matches(/[a-z]/, "Must contain at least one lowercase letter")
+    .matches(/[A-Z]/, "Must contain at least one uppercase letter")
+    .required("Password is required"),
+});
+
 const Register = () => {
   const { signUpwithEmail, signUpwithGoogle } = useContext(AuthContext);
-      const navigate = useNavigate();
-    const location = useLocation()
-  const notify = ()=>   toast.success("Account Created Successfully!", {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const notify = () =>
+    toast.success("Account Created Successfully!", {
       autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
@@ -33,19 +51,19 @@ const Register = () => {
       photoURL: "",
       password: "",
     },
+    validationSchema: SignupSchema,
     onSubmit: (values, { resetForm }) => {
       const { name, email, password, photoURL } = values;
       signUpwithEmail(email, password)
         .then(() => {
-          console.log("user created");
           notify();
-          updateProfile(auth.currentUser,{
+          updateProfile(auth.currentUser, {
             displayName: name,
             photoURL: photoURL,
-          })
+          });
           setTimeout(() => {
-          navigate(location.state ? location.state : "/");
-        }, 1500);
+            navigate(location.state ? location.state : "/");
+          }, 1500);
         })
         .catch((error) => {
           console.log(error);
@@ -55,17 +73,16 @@ const Register = () => {
   });
 
   const handleGoogleSignUp = () => {
-     signUpwithGoogle()
-     .then(()=>{
+    signUpwithGoogle()
+      .then(() => {
         notify();
         setTimeout(() => {
           navigate(location.state ? location.state : "/");
         }, 1500);
-     })
-     .catch(()=>{
-        // console.log(err)
-     })
-    
+      })
+      .catch(() => {
+
+      });
   };
 
   return (
@@ -77,10 +94,7 @@ const Register = () => {
 
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
               Full Name
             </label>
             <input
@@ -89,34 +103,34 @@ const Register = () => {
               name="name"
               value={formik.values.name}
               onChange={formik.handleChange}
-              required
-              className="w-full  text-black  px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onBlur={formik.handleBlur}
+              className="w-full text-black px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            {formik.errors.name && formik.touched.name && (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.name}</p>
+            )}
           </div>
 
           <div>
-            <label
-              htmlFor="photo"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="photoURL" className="block text-sm font-medium text-gray-700">
               Photo URL
             </label>
             <input
               type="text"
-              id="photo"
+              id="photoURL"
               name="photoURL"
               value={formik.values.photoURL}
               onChange={formik.handleChange}
-              required
-              className="w-full px-4  text-black  py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onBlur={formik.handleBlur}
+              className="w-full text-black px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            {formik.errors.photoURL && formik.touched.photoURL && (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.photoURL}</p>
+            )}
           </div>
 
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Email
             </label>
             <input
@@ -125,16 +139,16 @@ const Register = () => {
               name="email"
               value={formik.values.email}
               onChange={formik.handleChange}
-              required
-              className="w-full px-4  text-black  py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onBlur={formik.handleBlur}
+              className="w-full text-black px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            {formik.errors.email && formik.touched.email && (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.email}</p>
+            )}
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               Password
             </label>
             <input
@@ -143,9 +157,12 @@ const Register = () => {
               name="password"
               value={formik.values.password}
               onChange={formik.handleChange}
-              required
-              className="w-full px-4  text-black  py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onBlur={formik.handleBlur}
+              className="w-full text-black px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            {formik.errors.password && formik.touched.password && (
+              <p className="text-red-500 text-sm mt-1">{formik.errors.password}</p>
+            )}
           </div>
 
           <button
@@ -180,6 +197,7 @@ const Register = () => {
           </Link>
         </p>
       </div>
+      <ToastContainer />
     </div>
   );
 };
