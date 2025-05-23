@@ -34,7 +34,7 @@ const CreateGroup = () => {
         userEmail: user?.email,
       };
       //Post the group data to the server
-      fetch("http://localhost:3000/allgroups", {
+      fetch('http://localhost:2000/allgroups', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

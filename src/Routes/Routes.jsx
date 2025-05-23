@@ -21,17 +21,23 @@ const router = createBrowserRouter([
                 Component:Home
             },
             {
-                path:"creategroup",
+                path:"/creategroup",
                 element: <PrivateRoute><CreateGroup></CreateGroup></PrivateRoute>
             },
             {
-                path:"mygroup",
+                path:"/mygroups/:email",
+                loader: async ({params}) => await fetch(`http://localhost:2000/mygroups/${params.email}`),
                 element: <PrivateRoute><MyGroups></MyGroups></PrivateRoute>
             },
             {
-                path:"allgroups",
-                loader:()=>fetch("http://localhost:3000/allgroups"),
+                path:"/allgroups",
+                loader:()=>fetch("http://localhost:2000/allgroups"),
                 Component:AllGroups
+            },
+            {
+              path:"/allgroups/:id",
+                loader: async ({params}) =>await  fetch(`http://localhost:2000/allgroups${params.id}`),
+                Component:GroupDetails  
             },
             {
                 path:"/groupdetails",

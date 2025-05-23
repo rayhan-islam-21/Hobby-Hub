@@ -5,7 +5,7 @@ import AuthContext from "../../AuthContext/AuthContext";
 import { Tooltip } from "react-tooltip";
 const Header = () => {
   const { user, logOut, loading } = useContext(AuthContext);
-  console.log(user);
+  const email = user?.email;
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
   useEffect(() => {
@@ -49,7 +49,7 @@ const Header = () => {
                 <NavLink to="/creategroup">Create Group</NavLink>
               </li>
               <li>
-                <NavLink to="/mygroup">My Groups</NavLink>
+                <NavLink to={`/mygroups/${email}`}>My Groups</NavLink>
               </li>
             </ul>
           </div>
@@ -87,7 +87,7 @@ const Header = () => {
           <li>
             <NavLink   className={({ isActive }) =>
                 isActive ? "text-blue-500 font-bold" : ""
-              } to="mygroup">My Groups</NavLink>
+              } to={`/mygroups/${email}`} >My Groups</NavLink>
           </li>
           <li>
             <NavLink
