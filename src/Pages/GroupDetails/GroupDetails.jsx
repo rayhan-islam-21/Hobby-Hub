@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaMapMarkerAlt, FaCalendarAlt, FaUserAlt } from "react-icons/fa";
 import { useLoaderData } from "react-router";
 
@@ -12,7 +12,28 @@ const GroupDetails = () => {
     meetingLocation,
     startDate,
     userName,
+    _id,
   } = useLoaderData();
+
+  const currentDate = new Date()
+
+  const [isjoined, setIsJoined] = useState(false);
+
+  useEffect(() => {
+    const joinedGroups = JSON.parse(localStorage.getItem("joinedGroups")) || [];
+    if (joinedGroups.includes(_id)) {
+      setIsJoined(true);
+    }
+  }, [_id]);
+
+  const handleJoin = () => {
+    const joinedGroups = JSON.parse(localStorage.getItem("joinedGroups")) || [];
+    if (!joinedGroups.includes(_id)) {
+      joinedGroups.push(_id);
+      localStorage.setItem("joinedGroups", JSON.stringify(joinedGroups));
+      setIsJoined(true);
+    }
+  };
 
   return (
     <div className="w-full min-h-screen bg-white">
@@ -61,9 +82,36 @@ const GroupDetails = () => {
 
         {/* Join Button */}
         <div className="text-center mt-24">
-          <button className="bg-gradient-to-r from-green-400 to-green-600 text-white text-lg px-10 py-3 font-bold rounded-full shadow-lg hover:scale-105 transition duration-300 ease-in-out">
-            Join Now 🚀
-          </button>
+          {isjoined ? (
+            <button
+              disabled
+              onClick={handleJoin}
+              className="bg-gradient-to-r from-gray-400 to-gray-600 text-white text-lg px-10 py-3 font-bold rounded-full cursor-not-allowed shadow-lg hover:scale-105 transition duration-300 ease-in-out"
+            >
+              Joined
+            </button>
+          ) : <div>
+
+            {
+              new Date(startDate) > currentDate ? (
+                <button
+                  onClick={handleJoin}
+                  className="bg-gradient-to-r from-indigo-500 to-blue-600 text-white text-lg px-10 py-3 font-bold rounded-full cursor-pointer shadow-lg hover:scale-105 transition duration-300 ease-in-out"
+                >
+                  Join Group
+                </button>
+              ) : (
+                <button
+                  disabled
+                  className="bg-gradient-to-r from-gray-400 to-gray-600 text-white text-lg px-10 py-3 font-bold rounded-full shadow-lg cursor-not-allowed"
+                >
+                  Group has ended
+                </button>
+              )
+            }
+          </div>
+            
+          }
         </div>
       </section>
     </div>

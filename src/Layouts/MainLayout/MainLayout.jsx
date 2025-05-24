@@ -11,7 +11,7 @@ const MainLayout = () => {
   const location = useLocation();
   return (
     <>
-      <div className="min-h-screen lg:justify-between  flex flex-col w-11/12 mx-auto">
+      <div className="min-h-screen lg:justify-between  flex flex-col w-13/14 mx-auto">
         <Header></Header>
         {
           location.pathname === "/" && <Slider></Slider>

@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "../../AuthContext/AuthContext";
+import Swal from "sweetalert2";
+
 import Groups from "../../Components/Groups/Groups";
 import { Link, useNavigate } from "react-router";
 
@@ -32,26 +34,43 @@ const MyGroups = () => {
       });
   }, [user, email]);
 
-  const deleteGroup = (id) => {
-    console.log("Delete group with id:", id);
-    fetch(`https://hobbyhub-server-ten.vercel.app/allgroups/${id}`, {
-      method: "DELETE",
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to delete");
-        }
-        return res.json();
+const deleteGroup = (id) => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch(`https://hobbyhub-server-ten.vercel.app/allgroups/${id}`, {
+        method: "DELETE",
       })
-      .then((data) => {
-        console.log("Delete response:", data);
-        const updatedGroups = group.filter((g) => g._id !== id);
-        setGroup(updatedGroups);
-      })
-      .catch((err) => {
-        console.error("Error deleting group:", err);
-      });
-  };
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Failed to delete");
+          }
+          return res.json();
+        })
+        .then((data) => {
+          const updatedGroups = group.filter((g) => g._id !== id);
+          setGroup(updatedGroups);
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your group has been deleted.",
+            icon: "success"
+          });
+        })
+        .catch((err) => {
+          console.error("Error deleting group:", err);
+          Swal.fire("Error", "Something went wrong while deleting.", "error");
+        });
+    }
+  });
+};
+
 
   return (
     <div className="text-start mt-12 mb-12 px-4">

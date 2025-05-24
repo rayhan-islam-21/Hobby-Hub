@@ -38,7 +38,7 @@ const router = createBrowserRouter([
             {
               path:"/allgroups/:id",
                 loader: async ({params}) =>await  fetch(`https://hobbyhub-server-ten.vercel.app/allgroups/${params.id}`),
-                Component:GroupDetails  
+                Component:GroupDetails ,
             },
             {
                 path:"/groupdetails/:id",
@@ -67,7 +67,7 @@ const router = createBrowserRouter([
         ]
     },
     {
-        path:"*",
+        path:"/*",
         Component:ErrorPage
     }
 ])
