@@ -23,8 +23,11 @@ const AllGroups = () => {
           return res.json();
         })
         .then(() => {
-          const updatedGroups = groups.filter((group) => group._id !== id);
-          setGroups(updatedGroups);
+          const updatedGroups = groups.filter((group) => group._id !== dataOfUser._id);
+          toast.success("Group Deleted Successfully");
+          setTimeout(()=>{
+            setGroups(updatedGroups);
+          },[1500])
         })
         .catch((err) => {
           console.error("Error deleting group:", err);

@@ -1,13 +1,26 @@
 import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "../../AuthContext/AuthContext";
 import Groups from "../../Components/Groups/Groups";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const MyGroups = () => {
   const { user } = useContext(AuthContext);
   const email = user?.email;
+  const navigate = useNavigate();
   const [groupLoading, setGroupLoading] = useState(true);
   const [group, setGroup] = useState([]);
+  const handleUpdate = (id) => {
+    navigate(`/updategroup/${id}`);
+  }
+
+
+
+
+
+
+
+
+
 
   useEffect(() => {
     fetch(`https://hobbyhub-server-ten.vercel.app/mygroups/${email}`)
@@ -91,7 +104,7 @@ const MyGroups = () => {
                         Details
                       </button>
                     </Link>
-                    <button className="bg-blue-500 btn hover:bg-blue-600 text-white px-3 py-1 rounded text-xs shadow">
+                    <button onClick={()=>handleUpdate(g._id)} className="bg-blue-500 btn hover:bg-blue-600 text-white px-3 py-1 rounded text-xs shadow">
                       Update
                     </button>
                     <button
