@@ -37,7 +37,7 @@ const AllGroups = () => {
 
   return (
     <>
-      <div className="text-start mt-12 mb-12">
+      <div className="text-start mt-12 mb-12 ">
         <h1 className="text-xl text-start px-2 mb-3 font-bold text-green-500">
           TOTAL GROUPS : {groups.length}
         </h1>

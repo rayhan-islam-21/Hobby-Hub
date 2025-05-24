@@ -20,7 +20,7 @@ export const Slider = () => {
   });
 
   return (
-    <div className="w-full max-w-[1260px] h-64 lg:h-[400px] mx-auto my-4">
+    <div className="w-full max-w-full h-64 lg:h-[400px]  my-4">
       {" "}
       <Swiper
         slidesPerView={1}
